@@ -5,6 +5,7 @@ from util import load_weight_data
 
 st.title("My Withings Weight Tracker")
 
+
 # Get session_id from URL
 query_params = st._get_query_params()
 session_id = query_params.get("session_id", [None])[0]
@@ -17,5 +18,5 @@ else:
     with st.spinner("Fetching weight data..."):
         df = load_weight_data(session_id)
     st.dataframe(df)
-    fig = px.line(df, x=df.index, y='weight', title='Weight')
+    fig = px.line(df, x=df.index, y='Weight', title='Weight')
     st.plotly_chart(fig)

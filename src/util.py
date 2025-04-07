@@ -6,11 +6,11 @@ def load_weight_data(session_id):
     resp = requests.get("http://localhost/weight", params={"session_id": session_id})
     if resp.status_code == 200:
         data = resp.json()
-        df = pd.DataFrame(data, columns=['timestamp', 'weight'])
+        df = pd.DataFrame(data, columns=['Timestamp', 'Weight'])
 
-        df['datetime'] = pd.to_datetime(df['timestamp'], unit='s')
-        df.set_index('datetime', inplace=True)
-        df.drop(columns='timestamp', inplace=True)
+        df['Datetime (UTC)'] = pd.to_datetime(df['Timestamp'], unit='s')
+        df.set_index('Datetime (UTC)', inplace=True)
+        df.drop(columns='Timestamp', inplace=True)
         return df
     else:
         # TODO make this better
