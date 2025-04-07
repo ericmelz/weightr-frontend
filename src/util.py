@@ -11,6 +11,8 @@ def load_weight_data(session_id):
         df['Date'] = pd.to_datetime(df['Timestamp'], unit='s')
         df.set_index('Date', inplace=True)
         df.drop(columns='Timestamp', inplace=True)
+        df['Year'] = df.index.year
+        df['Day of Year'] = df.index.dayofyear
         return df
     else:
         # TODO make this better
