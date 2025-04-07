@@ -44,7 +44,7 @@ kde_line = go.Scatter(
     x=x_vals,
     y=kde_vals,
     mode='lines',
-    name='Distribution',
+    name='Density',
     line=dict(width=2)
 )
 
