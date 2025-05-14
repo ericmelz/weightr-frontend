@@ -716,7 +716,7 @@ requires-dist = [
     { name = "pandas", specifier = "==2.2.3" },
     { name = "plotly", specifier = "==5.18.0" },
     { name = "requests", specifier = "==2.32.3" },
-    { name = "scipy", specifier = ">=1.15.3" },
+    { name = "scipy", specifier = "==1.15.3" },
     { name = "setuptools", specifier = "==78.1.0" },
     { name = "streamlit", specifier = "==1.44.1" },
 ]

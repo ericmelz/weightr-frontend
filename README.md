@@ -21,3 +21,7 @@ cd weightr-frontend
 make configure
 ```
 
+## Run
+```bash
+make run
+```
