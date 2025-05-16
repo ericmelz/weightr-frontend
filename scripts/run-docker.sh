@@ -14,7 +14,7 @@
 #   $@                          Pass any arguments to the container
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONF_FILE="/app/var/conf/weightr-backend/.env.dev.docker"
+CONF_FILE="/app/var/conf/weightr-frontend/.env.dev.docker"
 
 if [ -t 1 ]; then
     INTERACTIVE="-it"
@@ -26,8 +26,8 @@ docker run \
     --rm \
     --volume $PROJECT_ROOT:/app \
     --volume /app/.venv \
-    --env WEIGHTR_BACKEND_CONF_FILE=$CONF_FILE \
-    --publish 8088:8088 \
+    --env WEIGHTR_FRONTEND_CONF_FILE=$CONF_FILE \
+    --publish 8501:8501 \
     $INTERACTIVE \
     $(docker build -q $PROJECT_ROOT) \
     "$@"

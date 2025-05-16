@@ -1,18 +1,16 @@
+import os
+
 import pandas as pd
 import requests
 
+from conf import Settings
 
-DEVELOPMENT_ENV = 'dev.docker'
-DEVELOPMENT_ENV_TO_WEIGHT_URL = {
-    'dev': 'http://localhost/local-weight',
-    'dev.docker': 'http://localhost/k3d-weight',
-    'prod': 'http://weightr-backend/weight'
-}
-WEIGHT_URL = DEVELOPMENT_ENV_TO_WEIGHT_URL.get(DEVELOPMENT_ENV, 'http://localhost/local-weight')
+env_file = os.getenv("WEIGHTR_FRONTEND_CONF_FILE", "var/conf/weightr-frontend/.env.dev")
+settings = Settings(_env_file=env_file, _env_file_encoding="utf-8")
 
 
 def load_weight_data(session_id):
-    resp = requests.get(WEIGHT_URL, params={"session_id": session_id})
+    resp = requests.get(settings.weight_url, params={"session_id": session_id})
     if resp.status_code == 200:
         data = resp.json()
         df = pd.DataFrame(data)
