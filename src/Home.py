@@ -4,7 +4,7 @@ import streamlit as st
 
 from conf import Settings
 
-env_file = os.getenv("WEIGHTR_FRONTEND_CONF_FILE", "var/conf/weightr-frontend/.env.dev.docker")
+env_file = os.getenv("WEIGHTR_FRONTEND_CONF_FILE", "var/conf/weightr-frontend/.env.dev")
 settings = Settings(_env_file=env_file, _env_file_encoding="utf-8")
 
 
