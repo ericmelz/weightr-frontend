@@ -1,14 +1,12 @@
-import plotly.express as px
+import os
+
 import streamlit as st
 
-from util import load_weight_data
+from conf import Settings
 
-DEVELOPMENT_ENV = 'dev.docker'
-DEVELOPMENT_ENV_TO_LOGIN_URL = {
-    'dev': 'http://localhost/local-withings-login',
-    'dev.docker': 'http://localhost/k3d-withings-login'
-}
-LOGIN_URL = DEVELOPMENT_ENV_TO_LOGIN_URL.get(DEVELOPMENT_ENV, 'http://localhost/local-withings-login')
+env_file = os.getenv("WEIGHTR_FRONTEND_CONF_FILE", "var/conf/weightr-frontend/.env.dev.docker")
+settings = Settings(_env_file=env_file, _env_file_encoding="utf-8")
+
 
 st.set_page_config(
     page_title="Weightr.ai",
@@ -49,6 +47,6 @@ if session_id_from_query_params:
 if not session_id:
     st.markdown('---')
     st.write("Please log in to view your weight data.")
-    st.markdown(f"[Log in to Withings]({LOGIN_URL})")
+    st.markdown(f"[Log in to Withings]({settings.login_url})")
 else:
     st.session_state['session_id'] = session_id

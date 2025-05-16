@@ -3,6 +3,11 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONF_DIR="$PROJECT_ROOT/var/conf/weightr-frontend"
+ENV_TEMPLATE="$CONF_DIR/.env.dev.template"
+ENV_FINAL="$CONF_DIR/.env.dev"
+ENV_DOCKER_TEMPLATE="$CONF_DIR/.env.dev.docker.template"
+ENV_DOCKER_FINAL="$CONF_DIR/.env.dev.docker"
 VENV_DIR="$PROJECT_ROOT/.venv"
 
 # Install uv if missing
@@ -21,3 +26,7 @@ fi
 # Install dependencies
 echo "Installing dependencies..."
 uv pip install -e ".[dev]"
+
+echo "Copying environment template..."
+cp "$ENV_TEMPLATE" "$ENV_FINAL"
+cp "$ENV_DOCKER_TEMPLATE" "$ENV_DOCKER_FINAL"
