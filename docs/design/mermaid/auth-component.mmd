@@ -1,0 +1,27 @@
+graph TD
+    subgraph User Device
+        Frontend[Streamlit Frontend]
+    end
+
+    subgraph Backend Server
+        Backend["Weightr Backend (FastAPI)"]
+        SessionStore["Session Store (Redis)"]
+    end
+
+    subgraph Withings OAuth2
+        WithingsAuth[Withings Authorization Server]
+        WithingsAPI[Withings API Server]
+    end
+
+    User[User] --> Frontend
+    Frontend -->|Login link| Backend
+    Backend -->|Redirect with client_id, state| WithingsAuth
+    WithingsAuth -->|Authorization code| Backend
+    Backend -->|Store tokens in session| SessionStore
+    Backend -->|Redirect with session_id| Frontend
+    Frontend -->|Request weight data with session_id| Backend
+    Backend -->|Get session from session store| SessionStore
+    Backend -->|Call Withings API with access token| WithingsAPI
+    WithingsAPI -->|Weight data| Backend
+    Backend -->|Return data| Frontend
+    Frontend -->|Display data| User

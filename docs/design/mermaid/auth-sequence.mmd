@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant User
+    participant Frontend as Streamlit Frontend
+    participant Backend as Weightr Backend (FastAPI)
+    participant Withings as Withings OAuth2 Server
+
+    User->>Frontend: Visit site
+    Frontend->>Frontend: Check session_id in URL or session_state
+    alt no session_id
+        Frontend->>User: Show "Please log in" + login link to Backend /withings-login endpoint
+        User->>Backend: GET /withings-login
+        Backend->>Withings: Redirect with client_id, redirect_uri, state, scope
+        Withings->>User: Login & authorize app
+        Withings->>Backend: Redirect to /withings-callback?code=xxx&state=weightrCheck
+        User->>Backend: GET /withings-callback with code & state
+        Backend->>Backend: Validate state, exchange code for tokens (POST TOKEN_URL)
+        Backend->>Backend: Create session with access/refresh tokens, generate session_id
+        Backend->>Frontend: Redirect to frontend URL with session_id in query param
+        User->>Frontend: Load page with session_id
+        Frontend->>Frontend: Save session_id in session_state
+    else session_id present
+        Frontend->>Backend: Request /weight?session_id=...
+        Backend->>Backend: Validate session_id and tokens
+        alt access token expired
+            Backend->>Backend: Refresh access token
+        end
+        Backend->>Withings: Request weight data with access token
+        Withings->>Backend: Return weight data
+        Backend->>Frontend: Return weight data
+        Frontend->>User: Show weight data visualizations
+    end

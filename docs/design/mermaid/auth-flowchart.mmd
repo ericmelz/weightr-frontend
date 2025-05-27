@@ -1,0 +1,28 @@
+flowchart TD
+    A[User visits frontend] --> B{Session ID?}
+    B -- No --> C[Show login link to backend /withings-login]
+    C --> D[User clicks login link]
+    D --> E[Backend redirects to Withings OAuth2 auth page]
+    E --> F[User logs in and authorizes app at Withings]
+    F --> G[Withings redirects to backend /withings-callback with code & state]
+    G --> H[Backend validates state]
+    H --> I{State valid?}
+    I -- No --> J[Return error]
+    I -- Yes --> K[Backend exchanges code for tokens]
+    K --> L[Backend creates session with tokens and generates session_id]
+    L --> M[Backend redirects user to frontend with session_id]
+    M --> N[Frontend saves session_id]
+
+    B -- Yes --> N
+
+    N --> O[Frontend requests weight data from backend /weight with session_id]
+    O --> P[Backend retrieves session by session_id]
+    P --> Q{Session found?}
+    Q -- No --> R[Return 401 Unauthorized]
+    Q -- Yes --> S[Backend calls Withings API with access token]
+    S --> T{Withings API returns 401?}
+    T -- Yes --> U[Backend refreshes access token]
+    U --> S
+    T -- No --> V[Backend returns weight data to frontend]
+    V --> W[Frontend displays weight data]
+
