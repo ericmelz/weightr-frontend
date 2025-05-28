@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: weightr-frontend
+  labels:
+    app: weightr-frontend
+spec:
+  selector:
+    app: weightr-frontend
+  ports:
+  - port: 8501
+    targetPort: 8501
+    name: web
+  type: ClusterIP
