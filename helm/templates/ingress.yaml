@@ -6,7 +6,10 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-  - http:
+  {{- if .Values.ingress.host }}
+  # ── PRODUCTION: host-based routing ────────────────
+  - host: {{ .Values.ingress.host }}
+    http:
       paths:
       - path: /
         pathType: Prefix
@@ -15,3 +18,15 @@ spec:
             name: weightr-frontend
             port:
               number: 8501
+  {{- else }}
+  # ── DEVELOPMENT: no host, catch-all rule ─────────
+  - http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: weightr-frontend
+              port:
+                number: 8501
+  {{- end }}
